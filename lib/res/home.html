@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>DICT.dart</title>
+
+    <style type="text/css">
+      html, body {
+        margin: 0;
+      }
+
+      header, footer {
+        padding: 5px 10px;
+
+        background-color: #4CAF50;
+        color: #C8E6C9;
+      }
+
+      header {
+        box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.4);
+      }
+
+      header h1 {
+        display: inline-block;
+      }
+
+      section {
+        padding: 10px 20px;
+      }
+
+      footer {
+        margin-top: 30px;
+      }
+
+      footer a {
+        color: #1B5E20;
+        font-weight: bold;
+      }
+
+      footer a:not(:hover) {
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>DICT.dart</h1>
+    </header>
+
+    <section>
+      <dl>
+        <!-- HOME -->
+        <dt>
+          <h3>GET /</h3>
+        </dt>
+        <dd>
+          <h4>Description</h4>
+          <p>
+            Shows this page.
+          </p>
+          <h4>Response</h4>
+          <p>
+            <b>Type:</b> <code>text/html</code>
+          </p>
+        </dd>
+
+        <!-- DEFINE -->
+        <dt>
+          <h3>GET /define/:database/:word</h3>
+        </dt>
+        <dd>
+          <h4>Description</h4>
+          <p>
+            Retrieves the definitions for a word from a database.
+          </p>
+          <h4>URL Parameters</h4>
+          <dl>
+            <dt>
+              <b>database</b> <small><i>(Optional)</i></small>
+            </dt>
+            <dd>
+              <p>
+                The database to search for definitions in.
+              </p>
+              <p>
+                Defaults to <code>*</code> (search all available databases).
+              </p>
+            </dd>
+            <dt>
+              <b>word</b> <small><i>(Required)</i></small>
+            </dt>
+            <dd>
+              <p>
+                The word to retrieve the definitons for.
+              </p>
+            </dd>
+          </dl>
+          <h4>Response</h4>
+          <p>
+            <b>Type:</b> <code>application/json</code>
+          </p>
+          <p>
+            Returns an array of JSON objects.
+            Each of the array items has the following keys:
+          </p>
+          <dl>
+            <dt><b>word</b></dt>
+            <dd>
+              <p>
+                The defined word.
+              </p>
+            </dd>
+            <dt><b>database</b></dt>
+            <dd>
+              <p>
+                A JSON object with the following keys:
+                <dl>
+                  <dt><b>name</b></dt>
+                  <dd>
+                    <p>
+                      Name of the database the definition was retrieved from.
+                    </p>
+                  </dd>
+                  <dt><b>description</b></dt>
+                  <dd>
+                    <p>
+                      Short description of the database.
+                    </p>
+                  </dd>
+                </dl>
+              </p>
+            </dd>
+            <dt><b>text</b></dt>
+            <dd>
+              <p>
+                The text of the definition.
+              </p>
+            </dd>
+          </dl>
+        </dd>
+
+        <!-- MATCH -->
+        <dt>
+          <h3>GET /match/:database/:word</h3>
+        </dt>
+        <dd>
+          <h4>Description</h4>
+          <p>
+            Searches the index of a database for a word.
+          </p>
+          <h4>URL Parameters</h4>
+          <dl>
+            <dt>
+              <b>database</b> <small><i>(Optional)</i></small>
+            </dt>
+            <dd>
+              <p>
+                The database whose index should be searched.
+              </p>
+              <p>
+                Defaults to <code>*</code> (search all available databases).
+              </p>
+            </dd>
+            <dt>
+              <b>word</b> <small><i>(Required)</i></small>
+            </dt>
+            <dd>
+              <p>
+                The pattern to search for.
+              </p>
+            </dd>
+          </dl>
+          <h4>Query Parameters</h4>
+          <dl>
+            <dt>
+              <b>strategy</b> <small><i>(Optional)</i></small>
+            </dt>
+            <dd>
+              <p>
+                The search strategy.
+              </p>
+              <p>
+                Defaults to <code>.</code> (the default strategy of the
+                specified database).
+              </p>
+            </dd>
+          </dl>
+          <h4>Response</h4>
+          <p>
+            <b>Type:</b> <code>application/json</code>
+          </p>
+          <p>
+            Returns an array of JSON objects.
+            Each of the array items has the following keys:
+          </p>
+          <dl>
+            <dt><b>word</b></dt>
+            <dd>
+              <p>
+                The word which has been matched.
+              </p>
+            </dd>
+            <dt><b>database</b></dt>
+            <dd>
+              <p>
+                A JSON object with the following keys:
+                <dl>
+                  <dt><b>name</b></dt>
+                  <dd>
+                    <p>
+                      Name of the database the match was found in.
+                    </p>
+                  </dd>
+                  <dt><b>description</b></dt>
+                  <dd>
+                    <p>
+                      Short description of the database.
+                    </p>
+                  </dd>
+                </dl>
+              </p>
+            </dd>
+          </dl>
+        </dd>
+
+        <!-- MATCH-DEFINE -->
+        <dt>
+          <h3>GET /match-define/:database/:word</h3>
+        </dt>
+        <dd>
+          <h4>Descripton</h4>
+          <p>
+            First performs a match, then retrieves definitions for each match.
+            Use this command to reduce network traffic.
+          </p>
+          <h4>URL Parameters</h4>
+          <dl>
+            <dt>
+              <b>database</b> <small><i>(Optional)</i></small>
+            </dt>
+            <dd>
+              <p>
+                The database whose index should be searched.
+              </p>
+              <p>
+                Defaults to <code>*</code> (search all available databases).
+              </p>
+            </dd>
+            <dt>
+              <b>word</b> <small><i>(Required)</i></small>
+            </dt>
+            <dd>
+              <p>
+                The pattern to search for.
+              </p>
+            </dd>
+          </dl>
+          <h4>Query Parameters</h4>
+          <dl>
+            <dt>
+              <b>strategy</b> <small><i>(Optional)</i></small>
+            </dt>
+            <dd>
+              <p>
+                The search strategy.
+              </p>
+              <p>
+                Defaults to <code>.</code> (the default strategy of the
+                specified database).
+              </p>
+            </dd>
+          </dl>
+          <h4>Response</h4>
+          <p>
+            <b>Type:</b> <code>application/json</code>
+          </p>
+          <p>
+            Returns an array of JSON objects.
+            Each of the array items has the following keys:
+          </p>
+          <dl>
+            <dt><b>word</b></dt>
+            <dd>
+              <p>
+                The defined word.
+              </p>
+            </dd>
+            <dt><b>database</b></dt>
+            <dd>
+              <p>
+                A JSON object with the following keys:
+                <dl>
+                  <dt><b>name</b></dt>
+                  <dd>
+                    <p>
+                      Name of the database the definition was retrieved from.
+                    </p>
+                  </dd>
+                  <dt><b>description</b></dt>
+                  <dd>
+                    <p>
+                      Short description of the database.
+                    </p>
+                  </dd>
+                </dl>
+              </p>
+            </dd>
+            <dt><b>text</b></dt>
+            <dd>
+              <p>
+                The text of the definition.
+              </p>
+            </dd>
+          </dl>
+        </dd>
+
+        <!-- DATABASES -->
+        <dt>
+          <h3>GET /databases</h3>
+        </dt>
+        <dd>
+          <h4>Description</h4>
+          <p>
+            Gets a list of all available databases.
+          </p>
+          <h4>Response</h4>
+          <p>
+            <b>Type:</b> <code>application/json</code>
+          </p>
+          <p>
+            Returns an array of JSON objects.
+            Each of the array items has the following keys:
+          </p>
+          <dl>
+            <dt><b>name</b></dt>
+            <dd>
+              <p>
+                Name of the database.
+              </p>
+            </dd>
+            <dt><b>description</b></dt>
+            <dd>
+              <p>
+                Short description of the database.
+              </p>
+            </dd>
+          </dl>
+        </dd>
+
+        <!-- STRATEGIES -->
+        <dt>
+          <h3>GET /strategies</h3>
+        </dt>
+        <dd>
+          <h4>Description</h4>
+          <p>
+            Gets a list of all available search strategies.
+          </p>
+          <h4>Response</h4>
+          <p>
+            <b>Type:</b> <code>application/json</code>
+          </p>
+          <p>
+            Returns an array of JSON objects.
+            Each of the array items has the following keys:
+          </p>
+          <dl>
+            <dt><b>name</b></dt>
+            <dd>
+              <p>
+                Name of the search strategy.
+              </p>
+            </dd>
+            <dt><b>description</b></dt>
+            <dd>
+              <p>
+                Short description of the search strategy.
+              </p>
+            </dd>
+          </dl>
+        </dd>
+
+        <!-- DATABASE INFO -->
+        <dt>
+          <h3>GET /info/:database</h3>
+        </dt>
+        <dd>
+          <h4>Description</h4>
+          <p>
+            Gets the source, copyright, and licensing information about the
+            specified database.
+          </p>
+          <h4>URL Parameters</h4>
+          <dl>
+            <dt>
+              <b>database</b> <small><i>(Required)</i></small>
+            </dt>
+            <dd>
+              <p>
+                The name of the database to get the information about.
+              </p>
+            </dd>
+          </dl>
+          <h4>Response</h4>
+          <p>
+            <b>Type:</b> <code>text/plain</code>
+          </p>
+        </dd>
+
+        <!-- SERVER INFO -->
+        <dt>
+          <h3>GET /server</h3>
+        <dt>
+        <dd>
+          <h4>Description</h4>
+          <p>
+            Shows information about the DICT server.
+          </p>
+          <h4>Response</h4>
+          <p>
+            <b>Type:</b> <code>text/plain</code>
+          </p>
+        </dd>
+
+        <!-- HELP -->
+        <dt>
+          <h3>GET /help</h3>
+        <dt>
+        <dd>
+          <h4>Description</h4>
+          <p>
+            Shows a short summary of commands that are understood by the server.
+          </p>
+          <h4>Response</h4>
+          <p>
+            <b>Type:</b> <code>text/plain</code>
+          </p>
+        </dd>
+      </dl>
+    </section>
+
+    <footer>
+      <p>
+        &copy; 2016
+        <a href="https://github.com/just95" target="_blank">Justin Andresen</a>.
+      </p>
+      <p>
+        DICT.dart is licensed under the MIT license agreement.
+        See the LICENSE file for details.
+      </p>
+    </footer>
+  </body>
+</html>
