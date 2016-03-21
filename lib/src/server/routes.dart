@@ -5,7 +5,7 @@
 part of dictapi.server;
 
 /// Base URI of additional resources.
-final Uri _resourceBaseUri = Uri.parse('package:dictapi/res');
+final Uri _resourceBaseUri = Uri.parse('package:dictapi/res/');
 
 /// The `conn` attribute of the current request.
 DictConnection get conn => app.request.attributes['conn'];
