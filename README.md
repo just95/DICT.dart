@@ -17,7 +17,7 @@ your application and run the `pub get` command.
 
 ```yaml
 dependencies:
-  dictapi: ^0.1.1
+  dictapi: ^0.1.2
 ```
 
 If you only want to set up the HTTP server, you can skip the step above and

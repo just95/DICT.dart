@@ -1,5 +1,5 @@
 name: dictapi
-version: 0.1.1
+version: 0.1.2
 description: APIs to communicate with DICT servers.
 author: Justin Andresen <jan.dresen.95@gmail.com>
 homepage: https://github.com/just95/DICT.dart
