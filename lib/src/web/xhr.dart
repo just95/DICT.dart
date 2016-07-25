@@ -15,7 +15,9 @@ class DictXhr implements DictApi {
   /// Sends a GET request.
   Future _GET(List<String> path,
       {String type, Map<String, String> query: const {}}) async {
-    var uri = base.resolve(joinAll(path)).replace(queryParameters: query);
+    var uri = base
+        .resolve(joinAll(path.map(Uri.encodeComponent)))
+        .replace(queryParameters: query);
     var req = await HttpRequest.request(uri.toString(), responseType: type);
     return req.response;
   }
